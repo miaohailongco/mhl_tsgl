@@ -1,13 +1,11 @@
 <template>
-	<div>
-		<div>图书管理系统主页</div>
-	</div>
+	<div>书籍类型管理</div>
 </template>
 
 <script>
 	export default {
 		data(){
-			return {
+			return{
 				
 			}
 		}

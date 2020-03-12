@@ -14,8 +14,39 @@ const routes = [
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '../views/home.vue'),
 	meta:{
-		required:true,//是否需要检查登录权限
-	}
+		requireAuth:true
+	},
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import(/* webpackChunkName: "admin" */ '../views/admin.vue'),
+  	meta:{
+  		requireAuth:true
+  	},
+	children:[
+		{
+			path:'userGL',
+			name:'userGL',
+			component: () => import(/* webpackChunkName: "userGL" */ '../views/userGL.vue'),
+		},
+		{
+			path:'bookGL',
+			name:'bookGL',
+			component: () => import(/* webpackChunkName: "bookGL" */ '../views/bookGL.vue'),
+		},
+		{
+			path:'bookTypeGL',
+			name:'bookTypeGL',
+			component: () => import(/* webpackChunkName: "bookTypeGL" */ '../views/bookTypeGL.vue'),
+		},
+		{
+			path:'renderGL',
+			name:'renderGL',
+			component: () => import(/* webpackChunkName: "renderGL" */ '../views/renderGL.vue'),
+		}
+		
+	]
   },
 ]
 
@@ -25,7 +56,7 @@ const router = new VueRouter({
 
 //路由前置拦截守卫
 router.beforeEach((to,from,next)=>{
-	if(to.meta.required){//需要登录检测
+	if(to.meta.requireAuth){//需要登录检测
 		if(session.getUserToken()){
 			next();
 		}else{

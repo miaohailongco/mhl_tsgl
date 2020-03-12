@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import "./css/default.css"
 import axios from "./axios"
+import msgBox from "./components/msgBox"
+Vue.use(msgBox)
+
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 
