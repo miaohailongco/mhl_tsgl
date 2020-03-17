@@ -14,7 +14,9 @@
 				<router-link class="glml" to="/admin/bookTypeGL" tag="div">图书类型管理</router-link>
 				<router-link class="glml" to="/admin/renderGL" tag="div">租借记录管理</router-link>
 			</div>
-			<router-view/>
+			<div class="right-content">
+				<router-view/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,7 +40,6 @@
 
 <style scoped lang="less">
 	.container{
-		width: 100%;
 		height: 100%;
 	}
 	.header{
@@ -50,6 +51,7 @@
 		justify-content: center;
 		align-items: center;
 		font-size: 40px;
+		border-bottom: 1px solid #000;
 		
 		&>div:last-child{
 			position: absolute;
@@ -79,10 +81,10 @@
 		
 		&>.left-content{
 			width: 200px;
-			height: 100px;
-			height: 100%;
+			min-width: 140px;
 			font-size: 20px;
 			background-color: #03c442;
+			height: 100%;
 			
 			&>.glml{
 				display: flex;
@@ -91,6 +93,7 @@
 				align-items: center;
 				height: 80px;
 				border-bottom: 1px solid #000;
+				border-right: 1px solid #000;
 				cursor: pointer;
 				
 				&:hover{
@@ -105,6 +108,8 @@
 		
 		&>.right-content{
 			flex: 1;
+			height: 100%;
+			overflow: auto;
 		}
 	}
 </style>

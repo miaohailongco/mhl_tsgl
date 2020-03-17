@@ -37,6 +37,7 @@
 		color: #fff;
 		border-radius: 4px;
 		padding: 15px 35px;
+		z-index: 1300;
 	}
 	.msgbox-enter-active,.msgbox-leave-active{
 		transition: all 500ms;
