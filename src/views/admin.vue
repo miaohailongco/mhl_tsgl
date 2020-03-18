@@ -3,7 +3,7 @@
 		<div class="header">
 			<div>mhl图书管理系统</div>
 			<div>
-				<span>{{this.$store.state.user.user_name}}</span>
+				<span>{{$store.state.user.user_name}}</span>
 				<span style="margin-left: 10px;" @click="exit">[退出]</span>
 			</div>
 		</div>
@@ -31,7 +31,7 @@
 		methods:{
 			exit(){
 				this.$store.commit('setToken','');
-				this.$store.commit('setUser',null);
+				this.$store.commit('setUser',{});
 				this.$router.replace('/login');
 			}
 		}

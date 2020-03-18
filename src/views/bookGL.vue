@@ -242,6 +242,7 @@
 			},
 			//编辑书籍信息
 			editBook(id){
+				
 				console.log(id);
 			},
 			//删除书籍

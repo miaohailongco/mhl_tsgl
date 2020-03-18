@@ -1,4 +1,5 @@
 <template>
+	<!-- vue的transition -->
 	<transition name="msgbox">
 		<div v-show="show" v-text="message" class="box"></div>
 	</transition>

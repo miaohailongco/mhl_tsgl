@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 	  token:session.getUserToken() ||　'',//token
-	  user: JSON.parse(session.getUserInfo() || '{}'),//用户信息
+	  user: JSON.parse(session.getUserInfo()),//用户信息
   },
   mutations: {
 	  //设置token

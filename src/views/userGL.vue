@@ -67,6 +67,40 @@
 				</tr>
 			</table>
 		</div>
+		<mhl-modal v-model="modalShow">
+			<template v-slot:header>
+				<div class="header">编辑用户信息</div>
+			</template>
+			<div>
+				<div class="form-group">
+					<div class="form-label">手机号</div>
+					<div class="form-input">
+						<input type="tel" v-model="modify_user_phone" placeholder="请输入手机号" >
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-label">昵称</div>
+					<div class="form-input">
+						<input type="tel" v-model="modify_user_name" placeholder="请输入用户昵称" >
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-label">身份</div>
+					<div class="form-input">
+						<select v-model="modify_user_type">
+							<option value="0">用户</option>
+							<option value="1">管理员</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<template v-slot:footer>
+				<div class="addBtn">
+					<button @click="saveUser">保存</button>
+					<button @click="modalShow = false">取消</button>
+				</div>
+			</template>
+		</mhl-modal>
 	</div>
 </template>
 
@@ -81,7 +115,12 @@
 				user_type:'-1',//用户身份类型
 				user:[],//用户列表
 				proBtnDisabled:true,//上一页按钮是否禁用
-				nextBtnDisabled:false
+				nextBtnDisabled:false,//上一页按钮是否禁用
+				modalShow:false,
+				modify_user_id:'',//修改的用户id
+				modify_user_phone:'',//修改的用户手机号
+				modify_user_name:'',//修改的用户昵称
+				modify_user_type:'',//修改的用户身份
 			}
 		},
 		mounted() {
@@ -107,8 +146,48 @@
 		methods:{
 			//编辑用户信息
 			editUser(id){
+				this.modify_user_id = id;
+				this.modalShow = true
+				this.$axios({
+					url:'user/searchUser',
+					data:{
+						user_id:id
+					}
+				}).then((result)=>{
+					console.log(result);
+					if(result.state == 100){
+						this.modify_user_phone = result.data[0].user_phone;
+						this.modify_user_name = result.data[0].user_name;
+						this.modify_user_type = result.data[0].user_type;
+					}
+				}).catch(()=>{
+					this.$msgBox("网络连接失败，请检查您的网络")
+				})
 				console.log(id);
 			},
+			saveUser(){
+				this.$axios({
+					url:'user/modifyUser',
+					data:{
+						user_id:this.modify_user_id,
+						user_phone:this.modify_user_phone,
+						user_name:this.modify_user_name,
+						user_type:this.modify_user_type
+					}
+				}).then((result)=>{
+					if(result.state == 100){
+						this.$msgBox('已修改，保存成功');
+						this.modalShow = false;
+					}
+					if(result.state == 101){
+						this.$msgBox(result.message)
+					}
+				}).catch((error)=>{
+					this.$msgBox("网络连接失败，请检查您的网络")
+				})
+				console.log(this.modify_user_id);
+			},
+			//删除用户
 			deleteUser(id){
 				this.$confirm({
 					message:'确认删除该条信息吗？',
@@ -146,7 +225,7 @@
 			//加载用户列表
 			loadData(){
 				this.$axios({
-					url:"user/searchUser",
+					url:"user/searchUsers",
 					data:{
 						user_phone:this.user_phone,
 						user_name:this.user_name,
@@ -341,6 +420,42 @@
 			
 			&:active{
 				background-color: #1275c4;
+			}
+		}
+	}
+	.header{
+		text-align: center;
+	}
+	.addBtn{
+		text-align: center;
+		
+		&>button{
+			width: 80px;
+			height: 35px;
+			font-size: 16px;
+			border-radius: 4px;
+			appearance: none;
+			-webkit-appearance: none;
+			border: 1px solid #ddd;
+			cursor: pointer;
+		}
+		
+		&>button:first-child{
+			background-color: #2196f3;
+			color: #fff;
+			
+			&:active{
+				background-color: #1275c4;
+			}
+		}
+		
+		&>button:last-child{
+			background-color: #f4f4f4;
+			color: #929292;
+			margin-left: 40px;
+			
+			&:active{
+				background-color: #c0c0c0;
 			}
 		}
 	}

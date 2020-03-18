@@ -13,13 +13,13 @@
 					<div class="form-group">
 						<div class="form-label">手机号:</div>
 						<div class="form-input">
-							<input type="tel" v-model="user_phone" placeholder="请输入手机号码" @keyup.enter="login" >
+							<input type="tel" v-model="user_phone" placeholder="请输入手机号码" @keyup.enter="loginOrRegister" >
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label">密码:</div>
 						<div class="form-input">
-							<input type="password" v-model="user_password" placeholder="请输入密码" @keyup.enter="login" >
+							<input type="password" v-model="user_password" placeholder="请输入密码" @keyup.enter="loginOrRegister" >
 						</div>
 					</div>
 				</div>
@@ -29,13 +29,13 @@
 						<div class="form-label">手机号:</div>
 						<div class="form-input">
 							<button @click="sendCode" v-text="codeMessage" :disabled="codeBtnDisable" >发送验证码</button>
-							<input type="tel" v-model="user_phone" placeholder="请输入手机号码" @keyup.enter="login" >
+							<input type="tel" v-model="user_phone" placeholder="请输入手机号码" @keyup.enter="loginOrRegister" >
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label">验证码:</div>
 						<div class="form-input">
-							<input type="password" v-model="user_code" placeholder="请输入验证码" @keyup.enter="login" >
+							<input type="password" v-model="user_code" placeholder="请输入验证码" @keyup.enter="loginOrRegister" >
 						</div>
 					</div>
 				</div>
@@ -54,31 +54,31 @@
 					<div class="form-label">手机号:</div>
 					<div class="form-input">
 						<button @click="sendCode" v-text="codeMessage"></button>
-						<input type="tel" v-model="user_phone" placeholder="请输入手机号码" @keyup.enter="login" >
+						<input type="tel" v-model="user_phone" placeholder="请输入手机号码">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="form-label">验证码:</div>
 					<div class="form-input">
-						<input type="password" v-model="user_code" placeholder="请输入验证码" @keyup.enter="login" >
+						<input type="password" v-model="user_code" placeholder="请输入验证码">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="form-label">昵称:</div>
 					<div class="form-input">
-						<input type="text" v-model="user_name" placeholder="请设置昵称" @keyup.enter="login" >
+						<input type="text" v-model="user_name" placeholder="请设置昵称">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="form-label">密码:</div>
 					<div class="form-input">
-						<input type="password" v-model="user_password" placeholder="请设置密码" @keyup.enter="login" >
+						<input type="password" v-model="user_password" placeholder="请设置密码">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="form-label">确认密码:</div>
 					<div class="form-input">
-						<input type="password" v-model="user_password1" placeholder="请再输入一次密码" @keyup.enter="login" >
+						<input type="password" v-model="user_password1" placeholder="请再输入一次密码">
 					</div>
 				</div>
 			</div>
@@ -139,7 +139,6 @@
 						user_phone:this.user_phone
 					}
 				}).then((result)=>{
-					console.log(result);
 					//手机号问题
 					if(result.state == 101){
 						this.$msgBox(result.message);
@@ -246,6 +245,10 @@
 							//手机号或验证码问题
 							if(result.state == 101){
 								this.$msgBox(result.message);
+							}
+							//token失效
+							if(result.state == 102){
+								this.$msgBox(result.message)
 							}
 							//登录成功
 							if(result.state == 100){
