@@ -163,12 +163,14 @@
 				nextBtnDisabled:false,
 				modalShow:false,
 				message:'',//模态框提示句
+				book_id:'',
 				in_book_name:'',//添加书籍的书名
 				in_book_author:'',//添加书籍的作者
 				in_book_company:'',//添加书籍的出版社
 				in_book_company_date:'',//添加书籍的出版时间
 				in_book_type:'',//添加书籍的分类
-				in_book_counts:''//添加书籍的数量
+				in_book_counts:'',//添加书籍的数量
+				isAdd:0,//0表示添加的保存，1表示编辑的保存
 			}
 		},
 		mounted() {
@@ -194,6 +196,14 @@
 		methods:{
 			//保存录入的书籍
 			inBook(){
+				if(this.isAdd == 0){
+					this.saveBookByAdd();
+				}else{
+					this.saveBookByEdit();
+				}
+			},
+			//添加书籍的保存
+			saveBookByAdd(){
 				if(!this.in_book_name){
 					this.$msgBox('请输入书籍名称');
 					return;
@@ -231,19 +241,69 @@
 				}).then((result)=>{
 					if(result.state == 100){
 						this.$msgBox('书籍添加成功');
+						this.modalShow = false;
 					}
 				}).catch((error)=>{
 					this.$msgBox('网络连接失败，请检查您的网络');
 				})
 			},
+			//编辑书籍的保存
+			saveBookByEdit(){
+				this.$axios({
+					url:'book/modifyBook',
+					data:{
+						book_id:this.book_id,
+						book_name:this.in_book_name,
+						book_author:this.in_book_author,
+						book_company:this.in_book_company,
+						book_company_date:this.in_book_company_date,
+						book_type:this.in_book_type,
+						book_counts:this.in_book_counts
+					}
+				}).then((result)=>{
+					if(result.state == 100){
+						this.$msgBox('已修改，保存成功');
+						this.modalShow = false;
+					}
+					console.log(result);
+				}).catch((error)=>{
+					this.$msgBox('网络连接失败，请检查您的网络');
+				})
+				console.log(111);
+			},
 			//添加书籍
 			addBook(){
 				this.modalShow = true;
+				this.in_book_name = '',
+				this.in_book_author = '',
+				this.in_book_company = '',
+				this.in_book_company_date = '',
+				this.in_book_type = '',
+				this.in_book_counts = ''
 			},
 			//编辑书籍信息
 			editBook(id){
-				
-				console.log(id);
+				this.book_id = id;
+				this.isAdd = 1;
+				this.modalShow = true;
+				this.$axios({
+					url:'book/searchBook',
+					data:{
+						book_id:id
+					}
+				}).then((result)=>{
+					if(result.state == 100){
+						var bookInfo = result.data[0];
+						this.in_book_name = bookInfo.book_name,
+						this.in_book_author = bookInfo.book_author,
+						this.in_book_company = bookInfo.book_company,
+						this.in_book_company_date = bookInfo.book_company_date.substr(0,10),
+						this.in_book_type = bookInfo.book_type,
+						this.in_book_counts = bookInfo.book_counts
+					}
+				}).catch((error)=>{
+					this.$msgBox('网络连接失败，请检查您的网络');
+				})
 			},
 			//删除书籍
 			deleteBook(id){
@@ -257,7 +317,6 @@
 									book_id:id
 								}
 							}).then((result)=>{
-								console.log(result);
 								if(result.state == 100){
 									this.$msgBox('删除成功');
 									this.pageCurrent = 1;
@@ -283,7 +342,7 @@
 			//加载书籍列表
 			loadData(){
 				this.$axios({
-					url:"book/searchBook",
+					url:"book/searchBooks",
 					data:{
 						book_name:this.book_name,
 						book_author:this.book_author,
@@ -293,7 +352,6 @@
 						pageSize:this.pageSize
 					}
 				}).then((result)=>{
-					console.log(result);
 					if(result.state == 100){
 						this.book = result.data.books;
 						if(result.data.pageObj.pageCounts == this.pageCurrent){
@@ -338,7 +396,7 @@
 		&>.form-label{
 			min-width: 60px;
 			text-align: right;
-			margin-right: 10px;
+			margin-right: 40px;
 			font-weight: bold;
 		}
 		
@@ -354,7 +412,7 @@
 				padding: 0 10px;
 				
 				
-				&::-webkit-inner-spin-button{
+				&::-webkit-inner-spin-button,&::-webkit-clear-button{
 					display: none;
 				}
 				

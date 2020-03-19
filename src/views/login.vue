@@ -136,7 +136,8 @@
 				this.$axios({
 					url:'user/sendMessage',
 					data:{
-						user_phone:this.user_phone
+						user_phone:this.user_phone,
+						loginRegister:this.loginRegister
 					}
 				}).then((result)=>{
 					//手机号问题
