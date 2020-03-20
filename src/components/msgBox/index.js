@@ -12,7 +12,6 @@ Msgbox.install = function(Vue){
 		var mb = new MB();
 		//挂载
 		mb.$mount();
-		console.log(mb);
 		document.body.appendChild(mb.$el)
 		mb.message = message;
 		mb.show = true;

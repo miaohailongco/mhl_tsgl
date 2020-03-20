@@ -178,6 +178,7 @@
 					if(result.state == 100){
 						this.$msgBox('已修改，保存成功');
 						this.modalShow = false;
+						this.loadData();
 					}
 					if(result.state == 101){
 						this.$msgBox(result.message)
