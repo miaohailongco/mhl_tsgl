@@ -253,6 +253,7 @@
 			},
 			//查询
 			search(){
+				this.pageCurrent = 1;
 				this.loadData();
 			},
 			//根据user_id值获取user数组下标

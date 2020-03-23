@@ -233,6 +233,7 @@
 			},
 			//查询
 			search(){
+				this.pageCurrent = 1;
 				this.loadData();
 			}
 		}

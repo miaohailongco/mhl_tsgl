@@ -371,6 +371,7 @@
 			},
 			//查询
 			search(){
+				this.pageCurrent = 1;
 				this.loadData();
 			}
 		}
@@ -412,6 +413,9 @@
 				border-radius: 4px;
 				padding: 0 10px;
 				
+				&:focus{
+					border-color: #03a9f4;
+				}
 				
 				&::-webkit-inner-spin-button,&::-webkit-clear-button{
 					display: none;
@@ -427,10 +431,6 @@
 					&:hover{
 						background-color: #fff;
 					}
-				}
-				
-				&:focus{
-					border-color: #03a9f4;
 				}
 			}
 			
