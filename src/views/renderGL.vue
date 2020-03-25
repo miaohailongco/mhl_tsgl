@@ -19,11 +19,9 @@
 					<select v-model="render_state">
 						<option value="-1">全部</option>
 						<option value="0">待审批</option>
-						<option value="1">审批通过</option>
+						<option value="1">租借中</option>
 						<option value="2">审批拒绝</option>
-						<option value="3">租借中</option>
-						<option value="4">租借归还</option>
-						<option value="5">租借超时</option>
+						<option value="3">已归还</option>
 					</select>
 				</div>
 			</div>
@@ -51,7 +49,7 @@
 					<td>{{item.bookName}}</td>
 					<td>{{item.render_time}}</td>
 					<td>{{during(item.render_date,item.render_time)}}</td>
-					<td>{{renderState(item.render_state)}}</td>
+					<td>{{renderState(item.render_date,item.render_time,item.render_state)}}</td>
 					<td>
 						<button v-if="item.render_state == 0" @click="checkRender(item.render_id)">审核</button>
 						<button @click="editRender(item.render_id)">编辑</button>
@@ -162,24 +160,24 @@
 			},
 			//租借状态
 			renderState(){
-				return (param)=>{
+				return (date,days,param)=>{
 					if(param == 0){
 						return '待审批'
 					}
 					if(param == 1){
-						return '审批通过'
+						var end = Date.now();//当前时间
+						var start = new Date(date).getTime();
+						if(end - start >= days * 60 * 60 * 24 * 1000){
+							return '已超时'
+						}else{
+							return '租借中'
+						}
 					}
 					if(param == 2){
 						return '审批拒绝'
 					}
 					if(param == 3){
-						return '租借中'
-					}
-					if(param == 4){
-						return '租借归还'
-					}
-					if(param == 5){
-						return '租借超时'
+						return '已归还'
 					}
 				}
 			}
