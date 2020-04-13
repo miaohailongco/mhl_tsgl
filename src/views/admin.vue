@@ -9,7 +9,7 @@
 		</div>
 		<div class="content">
 			<div class="left-content">
-				<router-link class="glml" to="/admin/userGL" tag="div">用户管理</router-link>
+				<router-link class="glml" to="/admin/" tag="div">用户管理</router-link>
 				<router-link class="glml" to="/admin/bookGL" tag="div">书籍管理</router-link>
 				<router-link class="glml" to="/admin/bookTypeGL" tag="div">图书类型管理</router-link>
 				<router-link class="glml" to="/admin/renderGL" tag="div">租借记录管理</router-link>

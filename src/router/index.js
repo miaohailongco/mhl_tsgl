@@ -13,9 +13,24 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '../views/home.vue'),
-	meta:{
-		requireAuth:true
-	},
+	children:[
+		{
+			path:'',
+			name:'renderHall',
+			component: () => import(/* webpackChunkName: "renderHall" */ '../views/renderHall.vue'),
+			meta:{
+				requireAuth:true
+			},
+		},
+		{
+			path:'personCenter',
+			name:'personCenter',
+			component: () => import(/* webpackChunkName: "personCenter" */ '../views/personCenter.vue'),
+			meta:{
+				requireAuth:true
+			},
+		}
+	]
   },
   {
     path: '/admin',
@@ -26,7 +41,7 @@ const routes = [
   	},
 	children:[
 		{
-			path:'userGL',
+			path:'',
 			name:'userGL',
 			component: () => import(/* webpackChunkName: "userGL" */ '../views/userGL.vue'),
 		},
